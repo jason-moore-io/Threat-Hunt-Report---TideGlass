@@ -173,6 +173,9 @@ LLMAgentLogs_CL
 | project TimeGenerated, session_id, actor, CVE, tool_name, model_response
 | order by TimeGenerated asc
 ```
+### 🖼️ Screenshot
+<img width="1490" height="533" alt="TH24_02" src="https://github.com/user-attachments/assets/82aaa89e-c6ae-4834-99c8-1c6b05496e70" />
+
 
 ### 🛠️ Detection Recommendation
 **Hunting Tip:** Where agent reasoning logs exist, mine `model_response` for CVE references — the agent frequently telegraphs its exploit path in plain text.
@@ -208,6 +211,8 @@ ApacheAccess_CL
 | where ClientIP !startswith "10."
 | project TimeGenerated, ClientIP, HttpMethod, UriStem
 ```
+### 🖼️ Screenshot
+
 
 ### 🛠️ Detection Recommendation
 **Hunting Tip:** Correlate external source IPs on protocol-upgrade events against threat intel and internal allow-lists.

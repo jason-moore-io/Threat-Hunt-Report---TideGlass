@@ -134,7 +134,9 @@ ApacheAccess_CL
 | where ClientIP !startswith "10."
 | project TimeGenerated, ClientIP, HttpMethod, UriStem, HttpStatus
 ```
-
+### 🖼️ Screenshot
+<img width="800" height="498" alt="TH24_01" src="https://github.com/user-attachments/assets/9e6ff475-ac39-4205-a7bc-131f012ef292" />
+      
 ### 🛠️ Detection Recommendation
 **Hunting Tip:** Alert on HTTP 101 responses from external IPs to notebook/kernel endpoints. A protocol upgrade from outside the estate is never routine for a data-science host.
 

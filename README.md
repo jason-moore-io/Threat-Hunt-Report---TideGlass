@@ -248,11 +248,12 @@ The parent command line reveals the root cause: `--no-token` disabled authentica
 
 ### 🔧 KQL Query Used
 ```kql
-LinuxProcess_CL
-| where Dvc == "gf-tg-nb01" and TargetProcessName == "python3.12"
-| where ActingProcessCommandLine has "marimo"
-| project TimeGenerated, TargetProcessName, TargetProcessId,
-          TargetProcessCommandLine, ActingProcessName, ActingProcessId, ActingProcessCommandLine
+AWSCloudTrail
+| where TimeGenerated between (datetime(2026-09-04 11:05:00) .. datetime(2026-09-04 11:57:00))
+| where EventSource == "secretsmanager.amazonaws.com"
+| summarize Calls = count(), IPs = dcount(SourceIpAddress), First = min(TimeGenerated)
+          by UserIdentityArn, UserIdentityAccessKeyId
+| order by First asc
 ```
 ### 🖼️ Screenshot
 <img width="1486" height="619" alt="TH24_04" src="https://github.com/user-attachments/assets/0753ef40-9eb3-4e56-bf94-20fb460984d5" />

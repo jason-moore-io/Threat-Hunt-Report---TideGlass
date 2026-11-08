@@ -440,7 +440,8 @@ AWSCloudTrail
 | order by TimeGenerated asc
 ```
 ### 🖼️ Screenshot
-<img width="889" height="534" alt="TH24_09" src="https://github.com/user-attachments/assets/4acf9ffb-9061-48e4-9b4d-f3b346b8e3d3" />
+<img width="735" height="417" alt="TH24_09" src="https://github.com/user-attachments/assets/af7b7108-b763-488e-8606-6b0889af966d" />
+
 
 ### 🛠️ Detection Recommendation
 **Hunting Tip:** Treat a repeated identical API call followed by a source-IP change as a rotation/evasion signal, even when no explicit throttling error is logged.

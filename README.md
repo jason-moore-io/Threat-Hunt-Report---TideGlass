@@ -692,7 +692,8 @@ LinuxAuth_CL
 | summarize Logins=count() by TargetUsername
 ```
 ### 🖼️ Screenshot
-<img width="1486" height="557" alt="TH24_16" src="https://github.com/user-attachments/assets/144d5d11-04cd-4146-b9dc-2b929ced572d" />
+<img width="770" height="415" alt="TH24_16" src="https://github.com/user-attachments/assets/5ac232b6-a03e-4978-a6de-5a3b5d65564b" />
+
 
 ### 🛠️ Detection Recommendation
 **Hunting Tip:** Baseline which accounts authenticate to the bastion and from where. A service account (`deploy`) logging in from the notebook host is anomalous.

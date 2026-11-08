@@ -650,9 +650,16 @@ The key was written to `/tmp/.c/id_ed25519` and used to SSH as `deploy` to the b
 
 ### 🔧 KQL Query Used
 ```kql
-LinuxProcess_CL
-| where Dvc == "gf-tg-nb01" and TargetProcessName == "ssh"
-| project TimeGenerated, TargetProcessCommandLine
+LinuxAuth_CL
+| where Dvc == "gf-tg-bastion01"
+| where EventResult == "Success"
+| extend Fingerprint = extract(@"(SHA256:[A-Za-z0-9+/=]+)", 1, EventOriginalMessage),
+         KeyType = extract(@"ssh2: (\S+) SHA256", 1, EventOriginalMessage),
+         SrcIP = extract(@"from (\d+\.\d+\.\d+\.\d+)", 1, EventOriginalMessage)
+| summarize Logins = count(), First = min(TimeGenerated), Last = max(TimeGenerated),
+            Users = make_set(TargetUsername), Sources = make_set(SrcIP)
+            by Fingerprint, KeyType
+| order by Logins asc
 ```
 ### 🖼️ Screenshot
 <img width="1374" height="606" alt="TH24_15" src="https://github.com/user-attachments/assets/3f3a3b6e-427a-4590-abb5-699f996ba64a" />

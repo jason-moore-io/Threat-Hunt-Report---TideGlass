@@ -332,6 +332,7 @@ LinuxNetwork_CL
 | project TimeGenerated, ActingProcessName, ActingProcessId, DstIpAddr, DstPortNumber
 ```
 ### 🖼️ Screenshot
+<img width="1090" height="724" alt="TH24_06" src="https://github.com/user-attachments/assets/5885711a-2f24-4c53-9440-e563c775a886" />
 
 
 ### 🛠️ Detection Recommendation
@@ -403,6 +404,7 @@ AWSCloudTrail
 | summarize Calls=count(), First=min(TimeGenerated), Last=max(TimeGenerated) by SourceIpAddress
 ```
 ### 🖼️ Screenshot
+<img width="962" height="713" alt="TH24_08" src="https://github.com/user-attachments/assets/8d350bdc-8933-40d2-ac2e-3d7c1d1e9e05" />
 
 ### 🛠️ Detection Recommendation
 **Hunting Tip:** Pivot cloud-API investigations on access key ID, not source IP. Flag long-term `AKIA` keys used from many addresses in a short window.
@@ -438,6 +440,7 @@ AWSCloudTrail
 | order by TimeGenerated asc
 ```
 ### 🖼️ Screenshot
+<img width="889" height="534" alt="TH24_09" src="https://github.com/user-attachments/assets/4acf9ffb-9061-48e4-9b4d-f3b346b8e3d3" />
 
 ### 🛠️ Detection Recommendation
 **Hunting Tip:** Treat a repeated identical API call followed by a source-IP change as a rotation/evasion signal, even when no explicit throttling error is logged.
@@ -478,6 +481,7 @@ AWSCloudTrail
 | order by FirstSeen asc
 ```
 ### 🖼️ Screenshot
+<img width="990" height="551" alt="TH24_10" src="https://github.com/user-attachments/assets/1e49d406-e465-4cfb-a834-9db3266bc61b" />
 
 ### 🛠️ Detection Recommendation
 **Hunting Tip:** Group cloud API calls by identity and count distinct source IPs per short window. A single credential fanning across many IPs in seconds is anomalous.
@@ -505,6 +509,9 @@ Routing one stolen credential across a pool of externally-controlled Cloudflare 
 
 ### 💡 Why it matters
 Defeated per-IP throttling and blocking; only the constant access key tied the activity together.
+
+### 🖼️ Screenshot
+<img width="983" height="631" alt="TH24_11" src="https://github.com/user-attachments/assets/3161a2a4-be19-459c-883c-4bbfc1c3068a" />
 
 ### 🛠️ Detection Recommendation
 **Hunting Tip:** Maintain awareness of serverless/edge egress ranges (Workers, Lambda) appearing as API source IPs for workload identities.
@@ -544,6 +551,7 @@ AWSCloudTrail
 | project TimeGenerated, SourceIpAddress, EventName, ReadOnly, RequestParameters
 ```
 ### 🖼️ Screenshot
+<img width="877" height="401" alt="TH24_12" src="https://github.com/user-attachments/assets/46f81aab-88bd-4a73-ad50-5ab4caca585e" />
 
 ### 🛠️ Detection Recommendation
 **Hunting Tip:** Alert on `GetSecretValue` for infrastructure/SSH-key secrets by service identities that normally read only application secrets.
@@ -580,6 +588,7 @@ AWSCloudTrail
 | order by TimeGenerated asc
 ```
 ### 🖼️ Screenshot
+<img width="656" height="385" alt="TH24_13" src="https://github.com/user-attachments/assets/e7c3cdb9-c6e3-4944-bb05-c0aa0c76f8ac" />
 
 ### 🛠️ Detection Recommendation
 **Hunting Tip:** For secret stores, alert specifically on `ReadOnly=false` events by non-human identities.
@@ -646,6 +655,7 @@ LinuxProcess_CL
 | project TimeGenerated, TargetProcessCommandLine
 ```
 ### 🖼️ Screenshot
+<img width="1374" height="606" alt="TH24_15" src="https://github.com/user-attachments/assets/3f3a3b6e-427a-4590-abb5-699f996ba64a" />
 
 ### 🛠️ Detection Recommendation
 **Hunting Tip:** Alert on SSH private keys written under `/tmp` (especially hidden dirs) and on `StrictHostKeyChecking=no` in interactive sessions.
@@ -682,6 +692,7 @@ LinuxAuth_CL
 | summarize Logins=count() by TargetUsername
 ```
 ### 🖼️ Screenshot
+<img width="1486" height="557" alt="TH24_16" src="https://github.com/user-attachments/assets/144d5d11-04cd-4146-b9dc-2b929ced572d" />
 
 ### 🛠️ Detection Recommendation
 **Hunting Tip:** Baseline which accounts authenticate to the bastion and from where. A service account (`deploy`) logging in from the notebook host is anomalous.
@@ -720,6 +731,7 @@ LinuxAuth_CL
 | project TimeGenerated, Fingerprint, EventOriginalMessage
 ```
 ### 🖼️ Screenshot
+<img width="897" height="393" alt="TH24_17" src="https://github.com/user-attachments/assets/269f2c6c-cad6-47b7-b2ad-d9fc4d88d913" />
 
 ### 🛠️ Detection Recommendation
 **Hunting Tip:** Extract and inventory key fingerprints from sshd logs; compare against an approved-key registry.
@@ -760,6 +772,8 @@ LinuxShellHistory_CL
 | project TimeGenerated, ShellUser, Command
 ```
 ### 🖼️ Screenshot
+<img width="770" height="364" alt="TH24_18" src="https://github.com/user-attachments/assets/0534105b-a78c-47b4-b01f-1cb0569bc216" />
+
 
 ### 🛠️ Detection Recommendation
 **Hunting Tip:** Alert on schema/size enumeration (`\dt+`, `pg_total_relation_size`) from interactive sessions on the bastion.
@@ -796,6 +810,7 @@ LLMAgentLogs_CL
 | project TimeGenerated, tool_name, model_response
 ```
 ### 🖼️ Screenshot
+<img width="877" height="421" alt="TH24_19" src="https://github.com/user-attachments/assets/99037f4a-104a-4e7b-8f8f-7268692a4cd9" />
 
 ### 🛠️ Detection Recommendation
 **Hunting Tip:** Row-count or size enumeration immediately before a bulk read is a pre-exfiltration signal worth correlating with subsequent egress.
@@ -834,6 +849,7 @@ LinuxShellHistory_CL
 | project TimeGenerated, Computer, ShellUser, Command
 ```
 ### 🖼️ Screenshot
+<img width="890" height="421" alt="TH24_20" src="https://github.com/user-attachments/assets/b85397b0-dd94-4274-8882-732fbe01a446" />
 
 ### 🛠️ Detection Recommendation
 **Hunting Tip:** Alert on `pg_dump` piped to a network tool (`curl`, `nc`) or to any external destination. Legitimate dumps write to local/backup storage.
@@ -871,6 +887,7 @@ Syslog
 | project TimeGenerated, Database, SyslogMessage
 ```
 ### 🖼️ Screenshot
+<img width="884" height="374" alt="TH24_21" src="https://github.com/user-attachments/assets/c3d6f575-7c74-4307-b0e2-dc735f28e812" />
 
 ### 🛠️ Detection Recommendation
 **Hunting Tip:** Ship Postgres connection logs to the SIEM; alert on sensitive databases (`customers`) accessed by unexpected users or from the bastion.
@@ -907,6 +924,7 @@ LinuxShellHistory_CL
 | project TimeGenerated, Computer, ShellUser, Command
 ```
 ### 🖼️ Screenshot
+<img width="901" height="419" alt="TH24_22" src="https://github.com/user-attachments/assets/a2ea7034-2be9-4bc1-b621-c181a65de69d" />
 
 ### 🛠️ Detection Recommendation
 **Hunting Tip:** Whitelist backup identities and destinations. Any `pg_dump` by a non-backup account or to a non-backup destination is suspicious.
@@ -949,8 +967,7 @@ LLMAgentLogs_CL
           by session_id
 ```
 ### 🖼️ Screenshot
-
-
+<img width="847" height="417" alt="TH24_23" src="https://github.com/user-attachments/assets/2f76713e-19b9-4cb4-9bd0-bf5ba91a3b83" />
 
 ### 🛠️ Detection Recommendation
 **Hunting Tip:** Baseline legitimate agent actors and session-ID prefixes. Alert on a new actor string or a session whose tasking-to-action ratio is far above interactive norms.

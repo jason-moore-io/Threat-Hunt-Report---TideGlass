@@ -399,9 +399,10 @@ The access key, not the IP, is the reliable pivot. IP-based blocking alone would
 ### 🔧 KQL Query Used
 ```kql
 AWSCloudTrail
-| where EventSource == "secretsmanager.amazonaws.com"
+| where TimeGenerated between (datetime(2026-09-04 11:05:00) .. datetime(2026-09-04 11:57:00))
 | where UserIdentityAccessKeyId == "AKIA4TIDEGLASS0EXAMPLE"
-| summarize Calls=count(), First=min(TimeGenerated), Last=max(TimeGenerated) by SourceIpAddress
+| project TimeGenerated, SourceIpAddress, EventName, RequestParameters, ErrorCode, ReadOnly
+| order by TimeGenerated asc
 ```
 ### 🖼️ Screenshot
 <img width="962" height="713" alt="TH24_08" src="https://github.com/user-attachments/assets/8d350bdc-8933-40d2-ac2e-3d7c1d1e9e05" />

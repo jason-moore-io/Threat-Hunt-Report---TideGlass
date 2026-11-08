@@ -212,6 +212,7 @@ ApacheAccess_CL
 | project TimeGenerated, ClientIP, HttpMethod, UriStem
 ```
 ### 🖼️ Screenshot
+<img width="740" height="485" alt="TH24_03" src="https://github.com/user-attachments/assets/0c9b18b3-d034-4dc2-a40c-2d16242f6a37" />
 
 
 ### 🛠️ Detection Recommendation
@@ -253,6 +254,8 @@ LinuxProcess_CL
 | project TimeGenerated, TargetProcessName, TargetProcessId,
           TargetProcessCommandLine, ActingProcessName, ActingProcessId, ActingProcessCommandLine
 ```
+### 🖼️ Screenshot
+<img width="1486" height="619" alt="TH24_04" src="https://github.com/user-attachments/assets/0753ef40-9eb3-4e56-bf94-20fb460984d5" />
 
 ### 🛠️ Detection Recommendation
 **Hunting Tip:** Baseline which processes a notebook service is expected to spawn. A kernel service spawning an ad-hoc `python3 -c` payload is anomalous.
@@ -293,6 +296,8 @@ AWSCloudTrail
 | summarize Calls=count(), IPs=dcount(SourceIpAddress), First=min(TimeGenerated)
           by UserIdentityArn, UserIdentityAccessKeyId
 ```
+### 🖼️ Screenshot
+<img width="1280" height="525" alt="TH24_05" src="https://github.com/user-attachments/assets/3b52cca4-9e1f-40a9-87ad-85b8f82065fd" />
 
 ### 🛠️ Detection Recommendation
 **Hunting Tip:** Alert on IMDS access by processes not on an approved list. Enforce IMDSv2 to require session tokens.
@@ -326,6 +331,8 @@ LinuxNetwork_CL
 | where Dvc == "gf-tg-nb01" and DstIpAddr == "169.254.169.254"
 | project TimeGenerated, ActingProcessName, ActingProcessId, DstIpAddr, DstPortNumber
 ```
+### 🖼️ Screenshot
+
 
 ### 🛠️ Detection Recommendation
 **Hunting Tip:** Correlate process-tree and network-attribution telemetry. Divergence between "who ran the command" and "who opened the socket" is a strong tampering/indirection signal.
@@ -395,6 +402,7 @@ AWSCloudTrail
 | where UserIdentityAccessKeyId == "AKIA4TIDEGLASS0EXAMPLE"
 | summarize Calls=count(), First=min(TimeGenerated), Last=max(TimeGenerated) by SourceIpAddress
 ```
+### 🖼️ Screenshot
 
 ### 🛠️ Detection Recommendation
 **Hunting Tip:** Pivot cloud-API investigations on access key ID, not source IP. Flag long-term `AKIA` keys used from many addresses in a short window.
@@ -429,6 +437,7 @@ AWSCloudTrail
 | project TimeGenerated, SourceIpAddress, UserIdentityAccessKeyId, ErrorCode
 | order by TimeGenerated asc
 ```
+### 🖼️ Screenshot
 
 ### 🛠️ Detection Recommendation
 **Hunting Tip:** Treat a repeated identical API call followed by a source-IP change as a rotation/evasion signal, even when no explicit throttling error is logged.
@@ -468,6 +477,7 @@ AWSCloudTrail
 | summarize FirstSeen=min(TimeGenerated) by SourceIpAddress
 | order by FirstSeen asc
 ```
+### 🖼️ Screenshot
 
 ### 🛠️ Detection Recommendation
 **Hunting Tip:** Group cloud API calls by identity and count distinct source IPs per short window. A single credential fanning across many IPs in seconds is anomalous.
@@ -533,6 +543,7 @@ AWSCloudTrail
 | where UserIdentityAccessKeyId == "AKIA4TIDEGLASS0EXAMPLE"
 | project TimeGenerated, SourceIpAddress, EventName, ReadOnly, RequestParameters
 ```
+### 🖼️ Screenshot
 
 ### 🛠️ Detection Recommendation
 **Hunting Tip:** Alert on `GetSecretValue` for infrastructure/SSH-key secrets by service identities that normally read only application secrets.
@@ -568,6 +579,7 @@ AWSCloudTrail
 | project TimeGenerated, EventName, ReadOnly, SourceIpAddress
 | order by TimeGenerated asc
 ```
+### 🖼️ Screenshot
 
 ### 🛠️ Detection Recommendation
 **Hunting Tip:** For secret stores, alert specifically on `ReadOnly=false` events by non-human identities.
@@ -633,6 +645,7 @@ LinuxProcess_CL
 | where Dvc == "gf-tg-nb01" and TargetProcessName == "ssh"
 | project TimeGenerated, TargetProcessCommandLine
 ```
+### 🖼️ Screenshot
 
 ### 🛠️ Detection Recommendation
 **Hunting Tip:** Alert on SSH private keys written under `/tmp` (especially hidden dirs) and on `StrictHostKeyChecking=no` in interactive sessions.
@@ -668,6 +681,7 @@ LinuxAuth_CL
 | where Dvc == "gf-tg-bastion01" and EventResult == "Success"
 | summarize Logins=count() by TargetUsername
 ```
+### 🖼️ Screenshot
 
 ### 🛠️ Detection Recommendation
 **Hunting Tip:** Baseline which accounts authenticate to the bastion and from where. A service account (`deploy`) logging in from the notebook host is anomalous.
@@ -705,6 +719,7 @@ LinuxAuth_CL
 | where TargetUsername == "deploy"
 | project TimeGenerated, Fingerprint, EventOriginalMessage
 ```
+### 🖼️ Screenshot
 
 ### 🛠️ Detection Recommendation
 **Hunting Tip:** Extract and inventory key fingerprints from sshd logs; compare against an approved-key registry.
@@ -744,6 +759,7 @@ LinuxShellHistory_CL
 | where Computer == "gf-tg-bastion01" and Command has "psql"
 | project TimeGenerated, ShellUser, Command
 ```
+### 🖼️ Screenshot
 
 ### 🛠️ Detection Recommendation
 **Hunting Tip:** Alert on schema/size enumeration (`\dt+`, `pg_total_relation_size`) from interactive sessions on the bastion.
@@ -779,6 +795,7 @@ LLMAgentLogs_CL
 | where actor == "tideglass-agent" and model_response has "2841902"
 | project TimeGenerated, tool_name, model_response
 ```
+### 🖼️ Screenshot
 
 ### 🛠️ Detection Recommendation
 **Hunting Tip:** Row-count or size enumeration immediately before a bulk read is a pre-exfiltration signal worth correlating with subsequent egress.
@@ -816,6 +833,7 @@ LinuxShellHistory_CL
 | where Command has_any ("pg_dump", "curl", "203.0.113.41")
 | project TimeGenerated, Computer, ShellUser, Command
 ```
+### 🖼️ Screenshot
 
 ### 🛠️ Detection Recommendation
 **Hunting Tip:** Alert on `pg_dump` piped to a network tool (`curl`, `nc`) or to any external destination. Legitimate dumps write to local/backup storage.
@@ -852,6 +870,7 @@ Syslog
 | extend Database = extract(@"database=(\S+)", 1, SyslogMessage)
 | project TimeGenerated, Database, SyslogMessage
 ```
+### 🖼️ Screenshot
 
 ### 🛠️ Detection Recommendation
 **Hunting Tip:** Ship Postgres connection logs to the SIEM; alert on sensitive databases (`customers`) accessed by unexpected users or from the bastion.
@@ -887,6 +906,7 @@ LinuxShellHistory_CL
 | where Command has "pg_dump"
 | project TimeGenerated, Computer, ShellUser, Command
 ```
+### 🖼️ Screenshot
 
 ### 🛠️ Detection Recommendation
 **Hunting Tip:** Whitelist backup identities and destinations. Any `pg_dump` by a non-backup account or to a non-backup destination is suspicious.
@@ -928,6 +948,9 @@ LLMAgentLogs_CL
             Tasking=make_set_if(user_input, isnotempty(user_input))
           by session_id
 ```
+### 🖼️ Screenshot
+
+
 
 ### 🛠️ Detection Recommendation
 **Hunting Tip:** Baseline legitimate agent actors and session-ID prefixes. Alert on a new actor string or a session whose tasking-to-action ratio is far above interactive norms.

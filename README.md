@@ -297,7 +297,8 @@ AWSCloudTrail
           by UserIdentityArn, UserIdentityAccessKeyId
 ```
 ### 🖼️ Screenshot
-<img width="1280" height="525" alt="TH24_05" src="https://github.com/user-attachments/assets/3b52cca4-9e1f-40a9-87ad-85b8f82065fd" />
+<img width="818" height="406" alt="TH24_05" src="https://github.com/user-attachments/assets/87b153da-d932-4889-8108-341ed6ecbd19" />
+
 
 ### 🛠️ Detection Recommendation
 **Hunting Tip:** Alert on IMDS access by processes not on an approved list. Enforce IMDSv2 to require session tokens.

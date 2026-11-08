@@ -212,7 +212,7 @@ ApacheAccess_CL
 | project TimeGenerated, ClientIP, HttpMethod, UriStem
 ```
 ### 🖼️ Screenshot
-<img width="740" height="485" alt="TH24_03" src="https://github.com/user-attachments/assets/0c9b18b3-d034-4dc2-a40c-2d16242f6a37" />
+
 
 
 ### 🛠️ Detection Recommendation
@@ -256,7 +256,8 @@ AWSCloudTrail
 | order by First asc
 ```
 ### 🖼️ Screenshot
-<img width="1486" height="619" alt="TH24_04" src="https://github.com/user-attachments/assets/0753ef40-9eb3-4e56-bf94-20fb460984d5" />
+<img width="909" height="337" alt="TH24_04" src="https://github.com/user-attachments/assets/ae15a3ae-5c96-4138-956a-a5ee08635b4a" />
+
 
 ### 🛠️ Detection Recommendation
 **Hunting Tip:** Baseline which processes a notebook service is expected to spawn. A kernel service spawning an ad-hoc `python3 -c` payload is anomalous.

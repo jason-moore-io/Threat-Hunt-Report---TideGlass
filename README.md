@@ -327,9 +327,18 @@ Command-line evidence alone would misattribute the credential theft. Network att
 
 ### 🔧 KQL Query Used
 ```kql
+let CurlProc = LinuxProcess_CL
+    | where TimeGenerated between (datetime(2026-09-04 11:05:00) .. datetime(2026-09-04 11:57:00))
+    | where Dvc == "gf-tg-nb01" and TargetProcessCommandLine has "169.254.169.254"
+    | project CurlTime = TimeGenerated, CurlPID = TargetProcessId, CurlParentPID = ActingProcessId;
 LinuxNetwork_CL
+| where TimeGenerated between (datetime(2026-09-04 11:05:00) .. datetime(2026-09-04 11:57:00))
 | where Dvc == "gf-tg-nb01" and DstIpAddr == "169.254.169.254"
-| project TimeGenerated, ActingProcessName, ActingProcessId, DstIpAddr, DstPortNumber
+| project NetTime = TimeGenerated, NetPID = ActingProcessId, NetProc = ActingProcessName, DstPortNumber
+| extend dummy = 1
+| join kind=inner (CurlProc | extend dummy = 1) on dummy
+| project NetTime, NetProc, NetPID, CurlTime, CurlPID, CurlParentPID,
+          Match = iff(NetPID == CurlPID, "holds", "does not hold")
 ```
 ### 🖼️ Screenshot
 <img width="1090" height="724" alt="TH24_06" src="https://github.com/user-attachments/assets/5885711a-2f24-4c53-9440-e563c775a886" />

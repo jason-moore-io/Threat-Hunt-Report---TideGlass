@@ -212,8 +212,7 @@ ApacheAccess_CL
 | project TimeGenerated, ClientIP, HttpMethod, UriStem
 ```
 ### 🖼️ Screenshot
-
-
+<img width="740" height="485" alt="TH24_03" src="https://github.com/user-attachments/assets/0ab4cd75-56b3-46be-99d2-9cc27d33a291" />
 
 ### 🛠️ Detection Recommendation
 **Hunting Tip:** Correlate external source IPs on protocol-upgrade events against threat intel and internal allow-lists.
